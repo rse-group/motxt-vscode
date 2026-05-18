@@ -114,17 +114,17 @@ export class MotxtGeneratorViewProvider implements vscode.WebviewViewProvider {
 				}
 
 				const outputPath = path.join(targetFolder, framework);
-				const jarDir = this.context.asAbsolutePath('src');
+				const jarDir = this.context.asAbsolutePath('bin');
 				const jarCandidates = fs
 					.readdirSync(jarDir)
 					.filter(file => file.startsWith('motxt') && file.endsWith('.jar'))
 					.sort();
 
 				if (jarCandidates.length === 0) {
-					vscode.window.showErrorMessage('Generator JAR not found in extension src folder.');
+					vscode.window.showErrorMessage('Generator JAR not found in extension bin folder.');
 					void webviewView.webview.postMessage({
 						type: 'status',
-						value: 'Generator JAR not found in extension src folder.'
+						value: 'Generator JAR not found in extension bin folder.'
 					});
 					void webviewView.webview.postMessage({ type: 'generateDone' });
 					return;
@@ -431,6 +431,9 @@ export class MotxtGeneratorViewProvider implements vscode.WebviewViewProvider {
 			if (previousState.targetValue) { targetInput.value = previousState.targetValue; }
 			if (previousState.statusText) { setStatus(previousState.statusText); }
 			openTargetFolder.disabled = previousState.openTargetFolderDisabled !== false;
+			// Always reset loading state on restore — a previous in-flight generation
+			// will never complete after a webview reload, so the button must be re-enabled.
+			setLoading(false);
 		}
 
 		// Scan workspace .uml files on load
