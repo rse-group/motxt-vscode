@@ -3,7 +3,7 @@
   "publisher": "csui-rse-lab",
   "displayName": "MoTxT - Model-to-Text Code Generator",
   "description": "Generate Django and FastAPI backend code from UML class diagrams using model-to-text transformation.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "icon": "media/logo.png",
   "engines": {
     "vscode": "^1.116.0"
